@@ -4,8 +4,8 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 -- Create database (if it doesn't exist)
-CREATE DATABASE IF NOT EXISTS HotelDB2;
-USE HotelDB2;
+CREATE DATABASE IF NOT EXISTS HotelDB;
+USE HotelDB;
 
 -- ThemedRooms Table
 CREATE TABLE ThemedRooms (

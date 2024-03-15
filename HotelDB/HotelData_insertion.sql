@@ -1,6 +1,6 @@
 
 
-USE HotelDB2;
+USE HotelDB;
 
 INSERT INTO ThemedRooms (ThemeID, ThemeName, BedType) VALUES
 (1, 'Safari Adventure', 'one double bed'),
