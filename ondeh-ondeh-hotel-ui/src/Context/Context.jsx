@@ -81,7 +81,7 @@ class RoomProvider extends Component {
     );
   };
 
-  filterRooms = () => {
+  filterRooms = () => { 
     let {
       rooms,
       type,
