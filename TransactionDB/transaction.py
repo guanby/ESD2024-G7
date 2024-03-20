@@ -32,7 +32,7 @@ def get_all_transactions():
             'RoomID': transaction.RoomID,
             'Amount': transaction.Amount,
             'Status': transaction.Status,
-            'TransactionDatetime': transaction.TransactionDatetime
+            'TransactionDatetime': transaction.TransactionDatetime.strftime("%d/%m/%Y %H:%M:%S")  # Format date as string
         }
         transaction_list.append(transaction_data)
 
@@ -53,7 +53,7 @@ def find_transactions_by_guest_id(guest_id):
             'RoomID': transaction.RoomID,
             'Amount': transaction.Amount,
             'Status': transaction.Status,
-            'TransactionDatetime': transaction.TransactionDatetime
+            'TransactionDatetime': transaction.TransactionDatetime.strftime("%d/%m/%Y %H:%M:%S")  # Format date as string
         }
         transaction_list.append(transaction_data)
 
@@ -95,7 +95,7 @@ def add_transaction():
                 'RoomID': new_transaction.RoomID,
                 'Amount': new_transaction.Amount,
                 'Status': new_transaction.Status,
-                'TransactionDatetime': new_transaction.TransactionDatetime
+                'TransactionDatetime': new_transaction.TransactionDatetime.strftime("%d/%m/%Y %H:%M:%S")  # Format date as string
             }
         }
         return jsonify(success_message), 201
