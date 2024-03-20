@@ -1,3 +1,8 @@
+-- Create database (if it doesn't exist)
+CREATE DATABASE IF NOT EXISTS GuestDB;
+USE GuestDB;
+
+
 CREATE TABLE IF NOT EXISTS Guest (
     GuestID INT AUTO_INCREMENT PRIMARY KEY,
     Username VARCHAR(255) NOT NULL,
