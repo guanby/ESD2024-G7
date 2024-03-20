@@ -149,7 +149,7 @@ def update_guest(guest_id):
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5001, debug=True)
 
     # print("This is flask for " + os.path.basename(__file__) + ": manage guests ...")
     # app.run(host='0.0.0.0', port=5001, debug=True)

@@ -19,9 +19,9 @@ CORS(app)
 
 #define simple microservices as URL here
 room_URL = "http://localhost:5000" # or call by "hotel.py" once custom network up
-guest_URL = "guest.py"
+guest_URL = "http://localhost:5001" # or call by "guest.py" once custom network up
 payment_URL = "payment.py"
-transaction_URL = "transaction.py"
+transaction_URL = "http://localhost:5002" # or call by "transaction.py" once custom network up
 notification_URL = "notification.py"
 
 
