@@ -3,21 +3,22 @@
 USE HotelDB;
 
 INSERT INTO ThemedRooms (ThemeID, ThemeName, BedType) VALUES
-(1, 'Safari Adventure', 'one double bed'),
-(2, 'Ocean Bliss', 'two double beds'),
-(3, 'Mountain Retreat', 'one double bed'),
-(4, 'Urban Modern', 'one double bed'),
-(5, 'Tropical Paradise', 'two double beds'),
-(6, 'Disney Land', 'one double bed'),
-(7, 'Futuristic', 'two double beds'),
-(8, 'Vintage', 'one double bed'),
-(9, 'Royal Suite', 'two double beds'),
-(10, 'Space Odyssey', 'one double bed'),
-(11, 'Art Deco', 'two double beds'),
-(12, 'Taylor Swift', 'one double bed'),
-(13, 'Gothic Medieval', 'two double beds'),
-(14, 'Jungle Bungalow', 'one double bed'),
-(15, 'Ice World', 'two double beds');
+(1, 'Safari Adventure', 'one double bed', 2, 150.00),
+(2, 'Ocean Bliss', 'two double beds', 2, 180.00),
+(3, 'Mountain Retreat', 'one double bed', 2, 140.00),
+(4, 'Urban Modern', 'one double bed', 2, 150.00),
+(5, 'Tropical Paradise', 'two double beds', 2, 155.00),
+(6, 'Disney Land', 'one double bed', 1, 166.00),
+(7, 'Futuristic', 'two double beds', 1, 177.00),
+(8, 'Vintage', 'one double bed', 1, 145.00),
+(9, 'Royal Suite', 'two double beds', 2, 200.00),
+(10, 'Space Odyssey', 'one double bed', 1, 190.00),
+(11, 'Art Deco', 'two double beds', 1, 130.00),
+(12, 'Taylor Swift', 'one double bed', 2, 300.00),
+(13, 'Gothic Medieval', 'two double beds', 1, 148.00),
+(14, 'Jungle Bungalow', 'one double bed', 2, 153.00),
+(15, 'Ice World', 'two double beds', 1, 120.00);
+
 
 INSERT INTO Rooms (ThemeID, RoomNumber) VALUES
 (1, '101'), (1, '102'),    -- Safari Adventure
