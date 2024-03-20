@@ -13,6 +13,13 @@ import Error from "../Pages/Error";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 
+// // Stripe Imports
+// import {Elements} from '@stripe/react-stripe-js';
+// import {loadStripe} from '@stripe/stripe-js';
+
+// // the key is located in the .env file
+// const stripePromise = loadStripe(process.env.PUB_KEY);
+
 function App() {
   return (
     <>
@@ -20,7 +27,9 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/rooms/" component={Room} />
-        <Route exact path="/rooms/:slug" component={SingleRoom} />
+        {/* <Elements stripe={stripePromise}> */}
+          <Route exact path="/rooms/:slug" component={SingleRoom} />
+        {/* </Elements> */}
         <Route component={Error} />
       </Switch>
       <Footer />

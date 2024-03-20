@@ -4,7 +4,7 @@ from datetime import datetime
 import logging
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/HotelDB'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/HotelDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -15,6 +15,13 @@ class ThemedRooms(db.Model):
     ThemeID = db.Column(db.Integer, primary_key=True)
     ThemeName = db.Column(db.String(255), nullable=False)
     BedType = db.Column(db.String(255), nullable=False)
+
+    def json(self):
+        return {
+            'ThemeID': self.ThemeID,
+            'ThemeName': self.ThemeName,
+            'BedType': self.BedType,
+        }
 
 class Rooms(db.Model):
     __tablename__ = 'Rooms'
@@ -42,14 +49,24 @@ class Availability(db.Model):
 
 @app.route("/hotel/themes")
 def get_all_themes():
-    themes = ThemedRooms.query.all()
+    # themes = ThemedRooms.query.all()
+    themeslist = db.session.scalars(db.select(ThemedRooms)).all()
+    if len(themeslist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "themedRooms": [theme.json() for theme in themeslist]
+                }
+            }
+        )
     return jsonify(
-        [{
-            'ThemeID': theme.ThemeID, 
-            'ThemeName': theme.ThemeName, 
-            'BedType': theme.BedType
-        } for theme in themes]
-    )
+        {
+            "code": 404,
+            "message": "There are no themed rooms."
+        }
+    ), 404
+    
 
 @app.route("/hotel/<string:themeName>/rooms")
 def find_by_theme(themeName):

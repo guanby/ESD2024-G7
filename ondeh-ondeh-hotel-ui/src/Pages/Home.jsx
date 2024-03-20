@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import react-router-dom
 import { Link } from "react-router-dom";
 import Banner from "../Components/Banner/Banner";
@@ -6,8 +6,19 @@ import FeaturedRooms from "../Components/FeaturedRooms/FeaturedRooms";
 // imports components
 import Hero from "../Components/Hero/Hero";
 import Services from "../Components/Services/Services";
+// import { ThemedRoom } from "../Components/FeaturedRooms/FeaturedRooms";
 
 function Home() {
+  const [themes, setThemedRooms] = useState([]);
+
+  // fetch hotel room data from hotel.py flask backend
+  useEffect(() => {
+    fetch('/hotel/themes')
+      .then(response => response.json())
+      .then(data => setThemedRooms(data.data.themedRooms))
+      .catch(error => console.error('Error:', error));
+  }, []);
+
   return (
     <>
       <Hero>
@@ -21,7 +32,7 @@ function Home() {
         </Banner>
       </Hero>
       <Services />
-      <FeaturedRooms />
+      <FeaturedRooms/>
     </>
   );
 }

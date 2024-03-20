@@ -97,6 +97,10 @@ export default class SingleRoom extends Component {
             })}
           </ul>
         </section>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <button className="btn-primary">Book Now</button>
+        </div>
       </>
     );
   }
