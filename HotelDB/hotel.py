@@ -15,12 +15,16 @@ class ThemedRooms(db.Model):
     ThemeID = db.Column(db.Integer, primary_key=True)
     ThemeName = db.Column(db.String(255), nullable=False)
     BedType = db.Column(db.String(255), nullable=False)
+    Capacity = db.Column(db.Integer, nullable=False)
+    Price = db.Column(db.Numeric(10,2), nullable=False)
 
     def json(self):
         return {
             'ThemeID': self.ThemeID,
             'ThemeName': self.ThemeName,
             'BedType': self.BedType,
+            'Capacity': self.Capacity,
+            'Price': self.Price
         }
 
 class Rooms(db.Model):
