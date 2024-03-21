@@ -2,7 +2,7 @@
 
 USE HotelDB;
 
-INSERT INTO ThemedRooms (ThemeID, ThemeName, BedType) VALUES
+INSERT INTO ThemedRooms (ThemeID, ThemeName, BedType, Capacity, Price) VALUES
 (1, 'Safari Adventure', 'one double bed', 2, 150.00),
 (2, 'Ocean Bliss', 'two double beds', 2, 180.00),
 (3, 'Mountain Retreat', 'one double bed', 2, 140.00),
