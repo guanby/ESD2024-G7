@@ -108,7 +108,7 @@ def processbooking(booking_info):
         # Invoke the guest microservice
         print('\n\n-----Invoking guest microservice-----')    
         guest_result = invoke_http(
-            guest_URL, method="POST", json=booking_info['apikey'])  # thinking of using api key to identify guest
+            guest_URL, method="GET", json=booking_info['apikey'])  # thinking of using api key to identify guest
         print("guest_result:", guest_result, '\n')  #id, name, email, phone
 
         # Check the guest result;
