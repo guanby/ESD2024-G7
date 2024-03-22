@@ -38,24 +38,15 @@ export default class SingleRoom extends Component {
       );
     }
 
-    const {
-      name,
-      description,
-      capacity,
-      size,
-      price,
-      extras,
-      gym,
-      bar,
-      images,
-    } = room;
+    const { ThemeName, BedType, Price } = room;
 
-    const [mainImg, ...defaultImg] = images;
+    // const [mainImg, ...defaultImg] = images;
+    // console.log(defaultImg);
 
     return (
       <>
-        <StyledHero img={mainImg || this.state.defaultBackground}>
-          <Banner title={`${name} room`}>
+        <StyledHero img={this.state.defaultBackground}>
+          <Banner title={`${ThemeName} room`}>
             <Link to="/rooms" className="btn-primary">
               back to rooms
             </Link>
@@ -64,27 +55,23 @@ export default class SingleRoom extends Component {
 
         <section className="single-room">
           <div className="single-room-images">
-            {defaultImg.map((item, index) => {
-              return <img key={index} src={item} alt={name} />;
-            })}
+
           </div>
 
           <div className="single-room-info">
             <article className="desc">
               <h3>details:</h3>
-              <p>{description}</p>
+              <p>{BedType}</p>
             </article>
 
             <article className="info">
               <h3>information:</h3>
-              <h6>price : ${price}</h6>
-              <h6>size : {size} SQFT</h6>
+              <h6>price : ${Price}</h6>
               <h6>
                 max capacity :{" "}
-                {capacity > 1 ? `${capacity} people` : `${capacity} person`}
+                {/* {capacity > 1 ? `${capacity} people` : `${capacity} person`} */}
               </h6>
-              <h6>{bar ? "bar provided" : "no bar provided"}</h6>
-              <h6>{gym && "free gym included"}</h6>
+
             </article>
           </div>
         </section>
@@ -92,9 +79,9 @@ export default class SingleRoom extends Component {
         <section className="room-extras">
           <h6>extras:</h6>
           <ul className="extras">
-            {extras.map((item, index) => {
+            {/* {extras.map((item, index) => {
               return <li key={index}> - {item}</li>;
-            })}
+            })} */}
           </ul>
         </section>
 

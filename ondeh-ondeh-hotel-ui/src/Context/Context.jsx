@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import data
-import items from "../Data/data";
+// import items from "../Data/data";
 
 // react context-api
 const RoomContext = React.createContext();
@@ -13,50 +13,64 @@ class RoomProvider extends Component {
     featuredRooms: [],
     loading: true,
     type: "all",
+    ThemeName: "",
+    BedType: "",
     capacity: 1,
     price: 0,
     minPrice: 0,
     maxPrice: 0,
-    minSize: 0,
-    maxSize: 0,
     gym: false,
     bar: false,
   };
 
   // getDate
   componentDidMount() {
-    // this.getData
-    let rooms = this.formatDate(items);
-    let featuredRooms = rooms.filter((room) => room.featured === true);
+    // fetch data from backend
+    fetch('/hotel/themes')
+      .then(response => response.json())
+      .then(data => {
+        const { themedRooms } = data.data;
+        const rooms = this.formatData(themedRooms);
+        // const featuredRooms = rooms.filter((room) => room.featured === true);
 
-    let maxPrice = Math.max(...rooms.map((item) => item.price));
-    let maxSize = Math.max(...rooms.map((item) => item.size));
+        const maxPrice = Math.max(...rooms.map((item) => item.Price));
 
-    this.setState({
-      rooms,
-      featuredRooms,
-      sortedRooms: rooms,
-      loading: false,
-      price: maxPrice,
-      maxPrice,
-      maxSize,
-    });
+
+        this.setState({
+          rooms,
+          // featuredRooms,
+          sortedRooms: rooms,
+          loading: false,
+          price: maxPrice,
+          maxPrice,
+          // maxSize,
+        });
+
+        // console.log(featuredRooms);
+
+      })
+      .catch(error => console.error('Error:', error));
+    
   }
 
-  formatDate(items) {
-    let tempItems = items.map((item) => {
-      let id = item.sys.id;
-      let images = item.fields.images.map((image) => image.fields.file.url);
+  formatData(themedRooms) {
+    return themedRooms.map((room) => {
+      const { ThemeID, ThemeName, BedType, Capacity, Price } = room;
 
-      let room = { ...item.fields, images, id };
-      return room;
+      // const formattedImages = images.map((image) => image.url);
+      // const formattedRoom = { id, name, slug, type, price, capacity, bar, gym, featured, description, extras, images: formattedImages };
+      // const formattedRoom = { id, name, slug, type, price, capacity, bar, gym, featured, description, extras};
+      const formattedRoom = { ThemeID, ThemeName, BedType, Capacity, Price};
+
+
+      return formattedRoom;
     });
-    return tempItems;
   }
 
   getRoom = (slug) => {
     let tempRooms = [...this.state.rooms];
-    const room = tempRooms.find((room) => room.slug === slug);
+    console.log(tempRooms);
+    const room = tempRooms.find((room) => room.ThemeName === slug);
     return room;
   };
 
