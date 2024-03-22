@@ -13,9 +13,11 @@ export default class FeaturedRooms extends Component {
   static contextType = RoomContext;
 
   render() {
-    let { loading, featuredRooms: rooms } = this.context;
-    rooms = rooms.map((room) => {
-      return <Room key={room.id} room={room} />;
+    let { loading, rooms: themes } = this.context;
+    console.log(themes);
+    //Pass ThemedRooms data and map into Room component 
+    themes = themes.map((room) => {
+      return <Room key={room.ThemeID} room={room} />;
     });
 
     return (
@@ -23,7 +25,7 @@ export default class FeaturedRooms extends Component {
         <Title title="featured rooms" />
 
         <div className="featured-rooms-center">
-          {loading ? <Loading /> : rooms}
+          {loading ? <Loading /> : themes}
         </div>
       </section>
     );

@@ -6,7 +6,6 @@ import FeaturedRooms from "../Components/FeaturedRooms/FeaturedRooms";
 // imports components
 import Hero from "../Components/Hero/Hero";
 import Services from "../Components/Services/Services";
-// import { ThemedRoom } from "../Components/FeaturedRooms/FeaturedRooms";
 
 function Home() {
   const [themes, setThemedRooms] = useState([]);
@@ -15,7 +14,7 @@ function Home() {
   useEffect(() => {
     fetch('/hotel/themes')
       .then(response => response.json())
-      .then(data => setThemedRooms(data.data.themedRooms))
+      .then(data => setThemedRooms(data.data.themedRooms)) 
       .catch(error => console.error('Error:', error));
   }, []);
 
@@ -32,7 +31,7 @@ function Home() {
         </Banner>
       </Hero>
       <Services />
-      <FeaturedRooms/>
+      <FeaturedRooms themes = {themes}/>
     </>
   );
 }
