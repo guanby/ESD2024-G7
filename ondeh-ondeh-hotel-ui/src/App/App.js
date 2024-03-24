@@ -7,6 +7,9 @@ import { Route, Switch } from "react-router-dom";
 import Home from "../Pages/Home";
 import Room from "../Pages/Room";
 import SingleRoom from "../Pages/SingleRoom";
+import Login from "../Pages/Login";
+import Booking from "../Pages/Booking";
+import Summary from "../Pages/Summary";
 import Error from "../Pages/Error";
 
 // import components
@@ -25,11 +28,14 @@ function App() {
     <>
       <Navbar />
       <Switch>
+        <Route exact path="/login/" component={Login} />
         <Route exact path="/" component={Home} />
         <Route exact path="/rooms/" component={Room} />
         {/* <Elements stripe={stripePromise}> */}
           <Route exact path="/rooms/:slug" component={SingleRoom} />
         {/* </Elements> */}
+        <Route exact path="/booking/" component={Booking} />
+        <Route exact path="/summary/" component={Summary} />
         <Route component={Error} />
       </Switch>
       <Footer />
