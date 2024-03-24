@@ -73,7 +73,24 @@ def find_by_guest_id(guestID):
         return jsonify({'error': 'Guest not found'}), 404
     
 
-@app.route("/guest", methods=['POST'])
+# find guestID from given email address
+@app.route("/guestid", methods=["GET"])
+def get_guest_id_by_email():
+    # Get the email from the request query parameters
+    email = request.args.get('email')
+
+    # Query the database to find the guest ID by email
+    guest = Guest.query.filter_by(Email = email).first()
+
+    if guest:
+        # If guest is found, return the guest ID
+        return jsonify({'guest_id': guest.GuestID}), 200
+    else:
+        # If guest is not found, return an error message
+        return jsonify({'error': 'Guest not found for the provided email'}), 404
+
+
+@app.route("/newguest", methods=['POST'])
 def create_guest():
     guest_id = request.json.get('guest_id', None)
     new_guest = Guest(GuestID = guest_id, AccountCreatedDate = datetime.now())
