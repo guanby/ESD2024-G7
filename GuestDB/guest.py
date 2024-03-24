@@ -67,10 +67,10 @@ def find_by_guest_id(guestID):
             'APIkey': guest.APIkey
         }
         # Return the guest information as JSON response
-        return jsonify(guest_info)
+        return jsonify({'code': 201, "data": guest_info})
     else:
         # If guest is not found, return a 404 error
-        return jsonify({'error': 'Guest not found'}), 404
+        return jsonify({'code': 404, 'error': 'Guest not found'}), 404
     
 
 # find guestID from given email address

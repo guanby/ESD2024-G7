@@ -18,24 +18,31 @@ app = Flask(__name__)
 CORS(app)
 
 #define simple microservices as URL here - Adjust to how u run depending on presence of custom network
-room_URL = "hotel.py"
-guest_URL = "guest.py"
-payment_URL = "payment.py"
+# room_URL = "hotel.py"
+# guest_URL = "guest.py"
+# payment_URL = "payment.py"
+# transaction_URL = "transaction.py"
+# notification_URL = "notification.py"
+
+room_URL = "http://localhost:5000/book/1"
+guest_URL = "http://localhost:5001/guest/1"
+payment_URL = "http://localhost:4242/checkout"
 transaction_URL = "transaction.py"
 notification_URL = "notification.py"
-
 
 ### AMQP ###
 exchangename = environ.get('exchangename') # transaction
 exchangetype = environ.get('exchangetype') # topic exchange
 
-#create a connection and a channel to the broker to publish messages to transaction
-connection = amqp_connection.create_connection() 
-channel = connection.channel()
 
-if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
-    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-    sys.exit(0)  # Exit with a success status
+# temporarily commented this to test invoking of microservices in processBooking 
+#create a connection and a channel to the broker to publish messages to transaction
+# connection = amqp_connection.create_connection() 
+# channel = connection.channel()
+
+# if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+#     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+#     sys.exit(0)  # Exit with a success status
 
 
 # main code
@@ -83,7 +90,7 @@ def processBooking(booking_info):
     # Invoke the hotel microservice
 
     print('\n-----Invoking rooms microservice-----')
-    room_result = invoke_http(room_URL, method='POST', json=booking_info)
+    room_result = invoke_http(room_URL, method='PUT', json=booking_info)
     print('order_result:', room_result)
   
     # Check the room result
@@ -96,9 +103,9 @@ def processBooking(booking_info):
         returnMessage(["There's an error when booking your room, please try again",400])
 
     # room is not available for the dates
-    elif room_result['success'] != True:
+    # elif room_result['success'] != True:
 
-        returnMessage([room_result['message'],409])
+    #     returnMessage([room_result['message'],409])
 
     else: # room booking is successful
 

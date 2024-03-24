@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/HotelDB'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/HotelDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -141,21 +141,25 @@ def update_room_availability(roomID):
     # Return a JSON response indicating success or failure
 
     data = request.get_json()
-    new_status = data.get('isAvailable')
-    target_date = data.get('date')  # Assuming 'date' is passed in 'YYYY-MM-DD' format
+    new_status = data.get('IsAvailable')  # Convert string to boolean
+    target_date = data.get('Date')  # Assuming 'date' is passed in 'YYYY-MM-DD' format
 
     try:
         target_date = datetime.strptime(target_date, "%Y-%m-%d").date()
     except ValueError:
-        return jsonify({'message': 'Invalid date format. Please use YYYY-MM-DD.'}), 400
+        return jsonify({'code': 400, 'message': 'Invalid date format. Please use YYYY-MM-DD.'}), 400
 
-    availability = Rooms.query.filter_by(RoomID=roomID, Date=target_date).first()
-    if availability:
-        availability.IsAvailable = new_status
+    if new_status is None:
+        return jsonify({'code': 400, 'message': 'IsAvailable field is missing or invalid.'}), 400
+
+    # availability = Rooms.query.filter_by(RoomID=roomID, Date=target_date).first()
+    result = Rooms.query.filter_by(RoomID=roomID, Date=target_date).update({'IsAvailable': new_status})
+    if result:
+            # availability.IsAvailable = new_status 
         db.session.commit()
-        return jsonify({'message': 'Room availability updated successfully.'})
+        return jsonify({'code': 201, 'message': 'Room availability updated successfully.'})
     else:
-        return jsonify({'message': 'Room or date not found.'}), 404
+        return jsonify({'code': 404, 'message': 'Room or date not found.'}), 404
 
 '''
 '''
@@ -172,21 +176,21 @@ def update_room_price(roomID):
     # Return a JSON response indicating success or failure
 
     data = request.get_json()
-    target_date = data.get('date')  # Assuming 'date' is passed in 'YYYY-MM-DD' format
-    new_price = data.get('price')
+    target_date = data.get('Date')  # Assuming 'date' is passed in 'YYYY-MM-DD' format
+    new_price = data.get('Price')
 
     try:
         target_date = datetime.strptime(target_date, "%Y-%m-%d").date()
     except ValueError:
-        return jsonify({'message': 'Invalid date format. Please use YYYY-MM-DD.'}), 400
+        return jsonify({'code': 400, 'message': 'Invalid date format. Please use YYYY-MM-DD.'}), 400
 
     room = Rooms.query.filter_by(RoomID=roomID, Date=target_date).first()
     if room:
         room.Price = new_price  # Assuming 'Price' is a column in the 'Rooms' table
         db.session.commit()
-        return jsonify({'message': 'Room price updated successfully.'})
+        return jsonify({'code': 201, 'message': 'Room price updated successfully.'})
     else:
-        return jsonify({'message': 'Room not found.'}), 404
+        return jsonify({'code': 400, 'message': 'Room not found.'}), 404
 
 
 
