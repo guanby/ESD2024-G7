@@ -57,13 +57,13 @@ export default function RoomFilter({ rooms }) {
 
       <form className="filter-form">
         {/* select type start */}
-        <div className="form-group">
-          <label htmlFor="type">rooms type</label>
+        <div className="form-group select-box">
+          <label htmlFor="type" className="label">rooms type</label>
           <select
             name="type"
             id="type"
             value={type}
-            className="form-control"
+            className="form-control select"
             onChange={handleChange}
           >
             {/* <option value="single">single</option> */}
@@ -79,7 +79,7 @@ export default function RoomFilter({ rooms }) {
             name="capacity"
             id="capacity"
             value={capacity}
-            className="form-control"
+            className="form-control select"
             onChange={handleChange}
           >
             {/* <option value="single">single</option> */}
