@@ -108,7 +108,7 @@ def book_hotel_room(roomID):
     # Assuming 'date' is passed in the JSON body of the request
     data = request.get_json()
     booking_date = data.get('date')
-    availability = Availability.query.filter(and_(Availability.RoomID == roomID, Availability.Date == booking_date)).first()
+    availability = Availability.query.filter((Availability.RoomID == roomID, Availability.Date == booking_date)).first()
     if availability and availability.IsAvailable:
         # Mark as booked (not available)
         availability.IsAvailable = False

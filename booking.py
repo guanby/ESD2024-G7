@@ -20,7 +20,7 @@ CORS(app)
 #define simple microservices as URL here
 room_URL = "http://localhost:5000" # or call by "hotel.py" once custom network up
 guest_URL = "http://localhost:5001" # or call by "guest.py" once custom network up
-payment_URL = "payment.py"
+payment_URL = "https://localhost:4242/checkout"
 transaction_URL = "http://localhost:5002" # or call by "transaction.py" once custom network up
 notification_URL = "notification.py"
 
@@ -122,9 +122,11 @@ def processbooking(booking_info):
             # 4. Proceed to making payment 
             # Invoke the payment microservice
             ### is there a redirection to payment page?
-            
+
             payment_result = invoke_http(
             payment_URL, method="POST", json=booking_info)  #!!! this part needs to refine depending on how payment is invoke
+
+
             print("payment_result:", payment_result, '\n') 
 
             ### error with payment
