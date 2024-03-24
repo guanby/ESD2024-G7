@@ -7,8 +7,8 @@ account_sid = 'ACbc1e7d315e924fe925a13b2c25e07e1c'
 auth_token  = '89b11d38ee3367e7d1c0a60ec1a14611'
 
 client = Client(account_sid, auth_token)
-info = request.json.get('phone')
-# customer_id = request.json.get('customer_id', None)
+info = request.json.get(' ') #get message to decide which sms to send
+
 
 if (info == 'Booking confirmed'):
     message = client.messages.create(
