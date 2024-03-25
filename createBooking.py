@@ -26,7 +26,7 @@ CORS(app)
 
 room_URL = "http://localhost:5000/book/1"
 guest_URL = "http://localhost:5001/guest/1"
-payment_URL = "http://localhost:4242/checkout"
+payment_URL = "http://localhost:5252/create-payment-intent"
 transaction_URL = "transaction.py"
 notification_URL = "notification.py"
 
@@ -127,6 +127,7 @@ def processBooking(booking_info):
         else: # guest details retrieval successful
             # 4. Proceed to making payment 
             # Invoke the payment microservice
+            print('\n\n-----Invoking payment microservice-----')    
             
             payment_result = invoke_http(
             payment_URL, method="POST", json=booking_info)  
