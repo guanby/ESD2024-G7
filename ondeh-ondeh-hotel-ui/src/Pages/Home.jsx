@@ -12,7 +12,7 @@ function Home() {
 
   // fetch hotel room data from hotel.py flask backend
   useEffect(() => {
-    fetch('/hotel/themes')
+    fetch('/hotel/rooms/available')
       .then(response => response.json())
       .then(data => setThemedRooms(data.data.themedRooms)) 
       .catch(error => console.error('Error:', error));

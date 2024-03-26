@@ -26,7 +26,7 @@ class RoomProvider extends Component {
   // getDate
   componentDidMount() {
     // fetch data from backend
-    fetch('/hotel/themes')
+    fetch('/hotel/rooms/available')
       .then(response => response.json())
       .then(data => {
         const { themedRooms } = data.data;
