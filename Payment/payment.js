@@ -1,6 +1,6 @@
 // This is your test secret API key.
 const express = require('express');
-const bodyParser = require("body-parser")
+// const bodyParser = require("body-parser")
 const cors = require("cors")
 const { resolve } = require("path");
 require("dotenv").config({ path: "./.env" });
@@ -9,8 +9,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 app.use(express.static('public'));
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json())
 
 app.use(cors())
 
