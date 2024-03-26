@@ -24,6 +24,8 @@ function Booking() {
   //   // Perform booking confirmation logic here
   //   console.log("Booking confirmed:", formData);
   // };
+
+  const [email, getEmail] = useState('');
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
@@ -32,6 +34,8 @@ function Booking() {
   const [numOfAdults, setnumOfAdults] = useState('');
   const [numOfChild, setnumOfChild] = useState('');
   const saveSession = () => {
+    // get session email
+    window.sessionStorage.getItem("email", email);
     window.sessionStorage.setItem("firstName", firstName);
     window.sessionStorage.setItem("lastName", lastName);
     window.sessionStorage.setItem("contactNumber", contactNumber);
