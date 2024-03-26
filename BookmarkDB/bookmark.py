@@ -52,7 +52,7 @@ def get_all_bookmarks(guestID):
 ''' 
 '''
 '''
-    2. POST req to delete a bookmark for a specific Guest
+    2. DELETE req to delete a bookmark for a specific Guest
 ''' 
 '''
 ''' 
@@ -67,6 +67,28 @@ def delete_bookmark(guestID, bookmarkID):
         return jsonify({"message": "Bookmark deleted successfully."})
     else:
         return jsonify({"message": "Bookmark not found."}), 404
+
+
+''' 
+'''
+'''
+    3. POST req to create a new bookmark for a specific Guest
+''' 
+'''
+''' 
+@app.route("/hotel/bookmarks/<int:guestID>/<int:roomID>", methods=['POST'])
+def create_bookmark(guestID, roomID):
+    # Filtering logic
+    bookmark = Bookmark.query.filter_by(GuestID=guestID, RoomID=roomID).first()
+
+    if bookmark:
+        return jsonify({"message": "Bookmark already exists."}), 409
+    else:
+        new_bookmark = Bookmark(GuestID=guestID, RoomID=roomID)
+        db.session.add(new_bookmark)
+        db.session.commit()
+        return jsonify({"message": "Bookmark added successfully.", "BookmarkID": new_bookmark.BookmarkID}), 201
+
 
 if __name__ == '__main__':
     app.run(debug=True)
