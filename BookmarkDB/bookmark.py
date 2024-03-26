@@ -31,21 +31,42 @@ class Bookmark(db.Model):
 ''' 
 '''
 '''
-    1. GET Request for ALL bookmark records
+    1. GET Request for ALL bookmark records for a specific Guest
+           (Guest need to be logged in first, session should include GuestID)
 '''
 '''
 '''
-@app.route("/hotel/bookmarks", methods=['GET'])
-def get_all_bookmarks():
-    bookmarklist = db.session.scalars(db.select(Bookmark)).all()
+@app.route("/hotel/bookmarks/<int:guestID>", methods=['GET'])
+def get_all_bookmarks(guestID):
+    # Filtering logic
+    bookmarklist = Bookmark.query.filter_by(GuestID=guestID).all()
+    
+    # bookmarklist = db.session.scalars(db.select(Bookmark)).all()
 
     if len(bookmarklist):
         return jsonify([bookmark.json() for bookmark in bookmarklist]), 200
     
-    return jsonify(
-        {
-            "code": 404,
-            "message": "There are no bookmarks currently."
-        }
-    ), 404
+    else:
+        return jsonify({"message": "No bookmarks found for the guest."}), 404
 
+''' 
+'''
+'''
+    2. POST req to delete a bookmark for a specific Guest
+''' 
+'''
+''' 
+@app.route("/hotel/bookmarks/<int:guestID>/<int:bookmarkID>", methods=['DELETE'])
+def delete_bookmark(guestID, bookmarkID):
+    # Filtering logic
+    bookmark = Bookmark.query.filter_by(GuestID=guestID, BookmarkID=bookmarkID).first()
+
+    if bookmark:
+        db.session.delete(bookmark)
+        db.session.commit()
+        return jsonify({"message": "Bookmark deleted successfully."})
+    else:
+        return jsonify({"message": "Bookmark not found."}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)
