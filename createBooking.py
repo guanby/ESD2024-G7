@@ -133,6 +133,8 @@ def processBooking(booking_info):
             payment_URL, method="POST", json=booking_info)  
             print("payment_result:", payment_result, '\n') 
 
+            # send back payment results here (payment_id) 
+
             ### error with payment
             # if a failure trigger error handler
             code = payment_result["code"]
