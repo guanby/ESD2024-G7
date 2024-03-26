@@ -15,7 +15,8 @@ class RoomProvider extends Component {
     type: "all",
     ThemeName: "",
     BedType: "",
-    capacity: 1,
+    Date: "",
+    IsAvailable: 1,
     price: 0,
     minPrice: 0,
     maxPrice: 0,
@@ -55,12 +56,12 @@ class RoomProvider extends Component {
 
   formatData(themedRooms) {
     return themedRooms.map((room) => {
-      const { ThemeID, ThemeName, BedType, Capacity, Price } = room;
+      const { RoomID, ThemeName, BedType, Date, IsAvailable, Price } = room;
 
       // const formattedImages = images.map((image) => image.url);
-      // const formattedRoom = { id, name, slug, type, price, capacity, bar, gym, featured, description, extras, images: formattedImages };
-      // const formattedRoom = { id, name, slug, type, price, capacity, bar, gym, featured, description, extras};
-      const formattedRoom = { ThemeID, ThemeName, BedType, Capacity, Price};
+      // const formattedRoom = { id, name, slug, type, price, IsAvailable, bar, gym, featured, description, extras, images: formattedImages };
+      // const formattedRoom = { id, name, slug, type, price, IsAvailable, bar, gym, featured, description, extras};
+      const formattedRoom = { RoomID, ThemeName, BedType, Date, IsAvailable, Price};
 
 
       return formattedRoom;
@@ -99,7 +100,7 @@ class RoomProvider extends Component {
     let {
       rooms,
       type,
-      capacity,
+      IsAvailable,
       price,
       minSize,
       maxSize,
@@ -111,7 +112,7 @@ class RoomProvider extends Component {
     let tempRooms = [...rooms];
 
     // transform value
-    capacity = parseInt(capacity);
+    IsAvailable = parseInt(IsAvailable);
     price = parseInt(price);
 
     // filter by type
@@ -119,9 +120,9 @@ class RoomProvider extends Component {
       tempRooms = tempRooms.filter((room) => room.type === type);
     }
 
-    // filter by capacity
-    if (capacity !== 1) {
-      tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
+    // filter by IsAvailable
+    if (IsAvailable !== 1) {
+      tempRooms = tempRooms.filter((room) => room.IsAvailable >= IsAvailable);
     }
 
     // filter by price
