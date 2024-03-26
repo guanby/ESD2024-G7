@@ -640,4 +640,13 @@ input:disabled, .firstNameDisabled, .lastNameDisabled, .numOfAdultsDisabled, .nu
   cursor: not-allowed;
 }
 
+/* Booking.jsx page */
+.forms-container {
+  display: flex;
+  justify-content: space-around;
+}
 
+.booking-container, .stripe-container {
+  width: 45%; /* Adjust as needed */
+  margin: 0 10px;
+}

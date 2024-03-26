@@ -50,6 +50,9 @@ app.post("/create-payment-intent", async (req, res) => {
   });
 
 app.post('/checkout', async (req, res) => {
+    // get room details from frontend, get specific priceid based on room name
+
+
   const session = await stripe.checkout.sessions.create({
     ui_mode: 'embedded',
     line_items: [
