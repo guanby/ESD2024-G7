@@ -15,7 +15,7 @@ class Guest(db.Model):
     GuestID = db.Column(db.Integer, primary_key=True)
 
     # kong also has username, password, apikey (to check)
-    Username = db.Column(db.String(255), nullable=False)
+    GuestName = db.Column(db.String(255), nullable=False)
 
     # to hash this!!
     Password = db.Column(db.String(255), nullable=False)
@@ -31,6 +31,11 @@ class Guest(db.Model):
     # for authentication & identification from kong 
     # users that are not logged in will not have API key
     APIkey = db.Column(db.String(255), nullable=True)
+
+    # card details for payment
+    CardNumber = db.Column(db.String(255), nullable=False)
+    CardExpiryDate = db.Column(db.Date, nullable=False)
+    CVC = db.Column(db.String(3), nullable=False)
 
 
 @app.route("/guests")

@@ -52,7 +52,8 @@ def createBooking():
     # Simple check of input format and data of the request are JSON
     if request.is_json:
         try:
-            booking_info = request.get_json() # guest input: {'roomid','date','apikey'}
+            booking_info = request.get_json() 
+            # guest input: {'roomid','date','apikey'}
             # apikey is use here as a unique identification -> match with the apikey that we will store
             # within guest database
 
