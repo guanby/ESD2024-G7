@@ -1,6 +1,7 @@
 -- Generate random availability (true or false) for each date from April 1 to May 31
-INSERT INTO Rooms (ThemeName, BedType, Date, IsAvailable, Price)
+INSERT INTO Rooms (TypeID, ThemeName, BedType, Date, IsAvailable, Price)
 SELECT
+    TypeID, 
     ThemeName,
     BedType,
     dates.Date,

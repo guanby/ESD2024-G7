@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS Rooms;
 -- Rooms Table
 CREATE TABLE Rooms (
     RoomID INT AUTO_INCREMENT PRIMARY KEY,
+    TypeID VARCHAR(255) NOT NULL,
     ThemeName VARCHAR(255) NOT NULL,
     BedType ENUM('one double bed', 'two double beds', 'two single beds') NOT NULL,
     Date DATE NOT NULL,
