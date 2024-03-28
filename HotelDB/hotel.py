@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
+from sqlalchemy import and_, func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/HotelDB'
@@ -14,14 +14,16 @@ db = SQLAlchemy(app)
 class Rooms(db.Model):
     __tablename__ = 'Rooms'
     RoomID = db.Column(db.Integer, primary_key=True)
+    TypeID = db.Column(db.String(255), nullable=False)
     ThemeName = db.Column(db.String(255), nullable=False)
     BedType = db.Column(db.String(255), nullable=False)
     Date = db.Column(db.Date, nullable=False)
     IsAvailable = db.Column(db.Boolean, nullable=False)
     Price = db.Column(db.Float(precision=2), nullable=False)
 
-    def __init__(self, RoomID, ThemeName, BedType, Date, IsAvailable, Price):
+    def __init__(self, RoomID, TypeID, ThemeName, BedType, Date, IsAvailable, Price):
         self.RoomID = RoomID
+        self.TypeID = TypeID
         self.ThemeName = ThemeName
         self.BedType = BedType
         self.Date = Date
@@ -31,6 +33,7 @@ class Rooms(db.Model):
     def json(self):
         return {
             'RoomID': self.RoomID,
+            'TypeID': self.TypeID,
             'ThemeName': self.ThemeName,
             'BedType': self.BedType,
             'Date': self.Date,
@@ -72,16 +75,64 @@ def find_by_available_date(date_range):
     if start_date > end_date:
         return jsonify({'success': False, 'message': 'Start date must be before end date.'}), 400
 
-    # Query the database for rooms available on the specified date range
-    available_rooms = db.session.query(Rooms.RoomID, Rooms.ThemeName, Rooms.BedType, Rooms.Date, Rooms.Price)\
-        .filter(Rooms.Date >= start_date, Rooms.Date <= end_date, Rooms.IsAvailable == True)\
-        .all()
-    
-    logging.debug(f"Query Date Range: {start_date} to {end_date}, Available Rooms: {available_rooms}")
+    # Assuming start_date and end_date have been validated and are available here
+    date_range_length = (end_date - start_date).days + 1  # Including both start and end dates
 
-    if available_rooms:
+    # Query the database for rooms available on the specified date range
+    # available_rooms = db.session.query(Rooms.RoomID, Rooms.TypeID, Rooms.ThemeName, Rooms.BedType, Rooms.Date, Rooms.Price)\
+    #     .filter(Rooms.Date >= start_date, Rooms.Date <= end_date, Rooms.IsAvailable == True)\
+    #     .group_by(Rooms.TypeID)\
+    #     .having(func.count(Rooms.Date.distinct()) == date_range)\
+    #     .all()
+
+    # qualified_type_ids = db.session.query(
+    #         Rooms.TypeID, Rooms.Date
+    #     ).filter(
+    #         Rooms.IsAvailable == True,
+    #         Rooms.Date >= start_date,
+    #         Rooms.Date <= end_date
+    #     ).group_by(
+    #         Rooms.TypeID
+    #     ).having(
+    #         func.count(Rooms.RoomID.distinct()) == date_range_length
+    #     ).subquery()
+
+    # available_room_types = db.session.query(
+    #         Rooms.RoomID, Rooms.TypeID, Rooms.ThemeName, Rooms.BedType, Rooms.Date, Rooms.Price
+    #     ).join(
+    #         qualified_type_ids, Rooms.TypeID == qualified_type_ids.c.TypeID, Rooms.Date == qualified_type_ids.c.Date
+    #     ).all()
+
+    try:
+        qualified_type_ids = db.session.query(
+                Rooms.TypeID
+            ).filter(
+                Rooms.IsAvailable == True,
+                Rooms.Date >= start_date,
+                Rooms.Date <= end_date
+            ).group_by(
+                Rooms.TypeID
+            ).having(
+                func.count(func.distinct(Rooms.Date)) == date_range_length
+            ).subquery('qualified_type_ids')
+
+        available_room_types = db.session.query(
+                Rooms.RoomID, Rooms.TypeID, Rooms.ThemeName, Rooms.BedType, Rooms.Date, Rooms.Price
+            ).join(
+                qualified_type_ids, and_(Rooms.TypeID == qualified_type_ids.c.TypeID)
+            ).filter(
+                Rooms.Date >= start_date, Rooms.Date <= end_date
+            ).all()
+    except Exception as e:
+        logging.error(f"Database query error: {e}")
+        return jsonify({'success': False, 'message': 'Error querying the database'}), 500
+
+    
+    logging.debug(f"Query Date Range: {start_date} to {end_date}, Available Rooms: {available_room_types}")
+
+    if available_room_types:
         # Format the results as a list of dictionaries
-        result = [{'RoomID': room.RoomID, 'ThemeName': room.ThemeName, 'BedType': room.BedType, 'Date': room.Date, 'Price': room.Price} for room in available_rooms]
+        result = [{'RoomID': room.RoomID, 'TypeID': room.TypeID, 'ThemeName': room.ThemeName, 'BedType': room.BedType, 'Date': room.Date, 'Price': room.Price} for room in available_room_types]
         return jsonify(result)
     else:
         # If no available rooms are found, return a message
