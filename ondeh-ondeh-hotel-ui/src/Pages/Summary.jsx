@@ -8,7 +8,9 @@ import SummaryForm from "../Components/SummaryForm/SummaryForm";
 function Summary() {
   return (
     <>
-      <SummaryForm></SummaryForm>
+
+      <SummaryForm />
+
     </>
   );
 }

@@ -11,7 +11,6 @@ import Login from "../Pages/Login";
 import Booking from "../Pages/Booking";
 import Summary from "../Pages/Summary";
 import Error from "../Pages/Error";
-import Payment from "../Pages/Payment";
 import PaymentCompletion from "../Pages/PaymentCompletion"
 
 // import components
@@ -38,7 +37,6 @@ function App() {
         {/* </Elements> */}
         <Route exact path="/booking/" component={Booking} />
         <Route exact path="/summary/" component={Summary} />
-        <Route exact path="/payment" component={Payment} />
         <Route exact path="/completion" component={PaymentCompletion} />
         <Route component={Error} />
       </Switch>

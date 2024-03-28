@@ -1,16 +1,50 @@
-import { PaymentElement } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //used to pass information from elements to stripe API
-import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { 
+  useStripe, 
+  useElements,
+  PaymentElement,
+  LinkAuthenticationElement
+} from "@stripe/react-stripe-js";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-//   handle form submission
+  useEffect(() => {
+
+    if (!stripe) {
+      return;
+    }
+
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      "payment intent client secret"
+    );
+
+    if (!clientSecret) {
+      return;
+    }
+
+    stripe.retrievePaymentIntent(clientSecret).then(({paymentIntent}) => {
+      switch (paymentIntent.status) {
+        case "succeeded":
+          setMessage("Payment succeeded!");
+          break;
+        case "processing":
+          setMessage("Payment is processing");
+          break;
+        default:
+          setMessage("Something went wrong.");
+          break;
+      }
+    });
+  }, [stripe]);
+
+  //   handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -26,7 +60,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/completion`,
+        return_url: `${window.location.origin}/completion `,
       },
     });
 
@@ -39,8 +73,17 @@ export default function CheckoutForm() {
     setIsProcessing(false);
   };
 
+  const handleEmail = event => {
+    console.log(event);
+  }
+
+
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
+      <LinkAuthenticationElement 
+      id="link-authentication-element" 
+      onChange={handleEmail} />
+
       <PaymentElement id="payment-element" />
       <button disabled={isProcessing || !stripe || !elements} id="submit">
         <span id="button-text">

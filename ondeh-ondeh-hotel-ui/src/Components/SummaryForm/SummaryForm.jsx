@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function SummaryForm() {
+  
+    const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
@@ -11,24 +13,26 @@ export default function SummaryForm() {
     const [numOfAdults, setNumOfAdults] = useState('');
     const [numOfChild, setNumOfChild] = useState('');
     useEffect(() => {
-        // Retrieve values from session storage when the component mounts
-        const storedFirstName = window.sessionStorage.getItem("firstName");
-        const storedLastName = window.sessionStorage.getItem("lastName");
-        const storedContactNumber = window.sessionStorage.getItem("contactNumber");
-        const storedCheckInDate = window.sessionStorage.getItem("checkInDate");
-        const storedCheckOutDate = window.sessionStorage.getItem("checkOutDate");
-        const storedNumOfAdults = window.sessionStorage.getItem("numOfAdults");
-        const storedNumOfChild = window.sessionStorage.getItem("numOfChild");
-    
-        // Set the state variables with the retrieved values
-        setFirstName(storedFirstName || '');
-        setLastName(storedLastName || '');
-        setContactNumber(storedContactNumber || '');
-        setCheckInDate(storedCheckInDate || '');
-        setCheckOutDate(storedCheckOutDate || '');
-        setNumOfAdults(storedNumOfAdults || '');
-        setNumOfChild(storedNumOfChild || '');
-      }, []);
+      // Retrieve values from session storage when the component mounts
+      const storedEmail = window.sessionStorage.getItem("email");
+      const storedFirstName = window.sessionStorage.getItem("firstName");
+      const storedLastName = window.sessionStorage.getItem("lastName");
+      const storedContactNumber = window.sessionStorage.getItem("contactNumber");
+      const storedCheckInDate = window.sessionStorage.getItem("checkInDate");
+      const storedCheckOutDate = window.sessionStorage.getItem("checkOutDate");
+      const storedNumOfAdults = window.sessionStorage.getItem("numOfAdults");
+      const storedNumOfChild = window.sessionStorage.getItem("numOfChild");
+  
+      // Set the state variables with the retrieved values
+      setEmail(storedEmail || '');
+      setFirstName(storedFirstName || '');
+      setLastName(storedLastName || '');
+      setContactNumber(storedContactNumber || '');
+      setCheckInDate(storedCheckInDate || '');
+      setCheckOutDate(storedCheckOutDate || '');
+      setNumOfAdults(storedNumOfAdults || '');
+      setNumOfChild(storedNumOfChild || '');
+    }, []);  
   return (
     <div className="booking-container">
       <h2>Check-In Info</h2>
@@ -112,7 +116,7 @@ export default function SummaryForm() {
           <label htmlFor="price">Total Price</label>
           <div>$600</div>
         </div>
-        <Link to="/payment"><button className="btn-primary" type="submit">Proceed to Payment</button></Link>
+        <button className="btn-primary" type="submit">Proceed to Payment</button>
       </form>
     </div>
   );

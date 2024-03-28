@@ -56,7 +56,7 @@ def createBooking():
             # guest input: {'roomid','date','apikey'}
             # apikey is use here as a unique identification -> match with the apikey that we will store
             # within guest database
-
+            print(booking_info)
             print("\nReceived an order in JSON:", booking_info)
 
             # 1. function "processBooking" to process guest inputs for booking

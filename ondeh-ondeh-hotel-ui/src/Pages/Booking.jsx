@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import axios from "axios";
 
 // import react-router-dom
 import { Link } from "react-router-dom";
@@ -22,7 +23,8 @@ function Booking() {
   useEffect(() => {
     fetch("http://localhost:5252/create-payment-intent", {
       method: "POST",
-    //   body: JSON.stringify({}),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rooms: [{ RoomID: 1, RoomName: "Safari Adventure"}]}),
     }).then(async (result) => {
 
       var { clientSecret } = await result.json();
@@ -31,9 +33,9 @@ function Booking() {
       console.log(clientSecret);
       setClientSecret(clientSecret);
     });
+
   }, []);
-
-
+  
   // const [formData, setFormData] = useState({
   //   firstName: "",
   //   lastName: "",
@@ -50,13 +52,42 @@ function Booking() {
   //   }));
   // };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // Perform booking confirmation logic here
-  //   console.log("Booking confirmed:", formData);
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Perform booking confirmation logic here
+    
+    // Get form data
+    const formData = {
+      "GuestID": 1, 
+      "RoomID": 1,
+      "email": email,
+      "firstName": firstName,
+      "lastName": lastName,
+      "contactNumber": contactNumber,
+      "checkInDate": checkInDate,
+      "checkOutDate": checkOutDate,
+      // Add more fields as needed
+    };
+    console.log(formData);
+  
+    try {
+      // Send POST request to backend
+      const response = axios.post('http://localhost:5100/book', formData, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
 
-  const [email, getEmail] = useState('');
+
+    console.log("Booking confirmed:", formData);
+  };
+
+  //state variables 
+  const [email, setEmail] = useState('');
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
@@ -64,7 +95,7 @@ function Booking() {
   const [checkOutDate, setcheckOutDate] = useState('');
   const [numOfAdults, setnumOfAdults] = useState('');
   const [numOfChild, setnumOfChild] = useState('');
-  const saveSession = () => {
+  const saveSession = async () => {
     // get session email
     window.sessionStorage.getItem("email", email);
     window.sessionStorage.setItem("firstName", firstName);
@@ -74,7 +105,10 @@ function Booking() {
     window.sessionStorage.setItem("checkOutDate", checkOutDate);
     window.sessionStorage.setItem("numOfAdults", numOfAdults);
     window.sessionStorage.setItem("numOfChild", numOfChild);
+
   }
+
+    
   return (
     <>
     <div className="forms-container">
@@ -115,6 +149,17 @@ function Booking() {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <input
+              type="text"
+              id="email"
+              placeholder="abc@email.com"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              required
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="checkInDate">Check-In Date</label>
             <input
               type="date"
@@ -136,27 +181,7 @@ function Booking() {
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="numOfAdults">Number of adults</label>
-            <input
-              type="number"
-              id="numOfAdults"
-              onChange={(e) => setnumOfAdults(e.target.value)}
-              value={numOfAdults}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="numOfChild">Number of children</label>
-            <input
-              type="number"
-              id="numOfChild"
-              onChange={(e) => setnumOfChild(e.target.value)}
-              value={numOfChild}
-              required
-            />
-          </div>
-          <Link to="/summary"><button className="btn-primary" onClick={saveSession} type="submit">Check Availability</button></Link>
+          <button className="btn-primary" onSubmit={handleSubmit} type="submit">Check Availability</button>
         </form>
       </div>
 
