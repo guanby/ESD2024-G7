@@ -14,7 +14,9 @@ Your command may be similar to the following: `cd C:/ESD2024-G7/ondeh-ondeh-hote
 
 ### 4. Setup microservices
 
-Open another CMD window and run hotel.py 
+4.1 Start WAMP / MAMP server
+4.2 Load sample data into MySQL database
+4.3 Open another CMD window and run hotel.py 
 
 `cd C:/ESD2024-G7/HotelDB`
 
