@@ -52,6 +52,25 @@ def get_all_bookmarks(guestID):
 ''' 
 '''
 '''
+    2. GET req to get all guest subscribed to specific roomID (use case: price change)
+''' 
+'''
+''' 
+@app.route("/hotel/bookmarks/<int:roomID>", methods=['GET'])
+def find_all_guests(roomID):
+    # Filtering logic
+    bookmarklist = Bookmark.query.filter_by(RoomID=roomID).all()
+
+    if len(bookmarklist):
+        return jsonify([bookmark.json() for bookmark in bookmarklist]), 200
+    
+    else:
+        return jsonify({"message": "No bookmarks found for the roomID."}), 404
+
+
+''' 
+'''
+'''
     2. DELETE req to delete a bookmark for a specific Guest
 ''' 
 '''
